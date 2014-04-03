@@ -92,7 +92,6 @@ public class BinderTest extends TestCase{
         Assert.assertEquals("ANANIM ANANAO", s2.name);
         Assert.assertFalse(s2.name.equals("Ananim ananao"));
         Assert.assertEquals(v.get("birthDate"), s2.birthDate);
-
     }
     
     public void test_bind_to_student_properties() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException{
