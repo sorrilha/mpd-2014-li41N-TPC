@@ -11,6 +11,7 @@ import pt.isel.mpd14.probe.Binder;
 import pt.isel.mpd14.probe.BindField;
 import pt.isel.mpd14.probe.BindNonNull;
 import pt.isel.mpd14.probe.BindProp;
+import pt.isel.mpd14.probe.BindWithFormatter;
 import pt.isel.mpd14.probe.test.model.Student;
 import pt.isel.mpd14.probe.test.model.StudentDto;
 
@@ -22,6 +23,10 @@ public class BinderTest{
     
     final static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     
+    /**
+     *
+     * @throws Exception
+     */
     @Test
     public void test_bind_student_to_studentDto() throws Exception
     {
@@ -44,6 +49,10 @@ public class BinderTest{
 
     }
     
+    /**
+     *
+     * @throws Exception
+     */
     @Test
     public void test_bind_fields_filter_null_values() throws Exception
     {
@@ -70,6 +79,10 @@ public class BinderTest{
 
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Test
     public void test_bind_fields_and_put_string_in_uppercase() throws Exception
     {
@@ -84,7 +97,7 @@ public class BinderTest{
           Act
         */
         // StudentDto s2 = new Binder(new BindFieldNonNull())
-        StudentDto s2 = new Binder<>(StudentDto.class, new BindField<>())
+          StudentDto s2 = new Binder<>(StudentDto.class, new BindWithFormatter<StudentDto>(new BindField()))
                 .bindTo(v);
         System.out.println(s2);
         /*
@@ -96,6 +109,14 @@ public class BinderTest{
 
     }
 
+    /**
+     *
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws ParseException
+     */
     @Test
     public void test_bind_to_student_properties() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException{
         /*
@@ -118,6 +139,14 @@ public class BinderTest{
         Assert.assertEquals(v.get("birthdate"), s.getBirthDate());    
     }
     
+    /**
+     *
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws ParseException
+     */
     @Test
     public void test_bind_to_student_properties_and_fields() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException{
         /*

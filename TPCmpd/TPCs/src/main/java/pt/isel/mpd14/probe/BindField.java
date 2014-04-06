@@ -44,10 +44,10 @@ public class BindField<T> implements BindMember<T> {
                      * Nota: Tipo base inclui superclasses ou superinterfaces.
                      */
                     if (fType.isAssignableFrom(v.getClass())) {
-                        Format a = f.getAnnotation(Format.class);
+                      /*  Format a = f.getAnnotation(Format.class);
                         if(a != null){
                             v = a.formatter().newInstance().format(v);
-                        }
+                        }*/
                         f.set(target, v);
                         return true;
                     } else {
@@ -55,8 +55,10 @@ public class BindField<T> implements BindMember<T> {
                     }
                 }
             }
-        } catch (IllegalArgumentException | IllegalAccessException | InstantiationException  ex) {
-            throwAsRTException(ex);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(BindField.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(BindField.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
 
