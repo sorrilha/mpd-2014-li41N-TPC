@@ -17,6 +17,8 @@
 package pt.isel.mpd14.probe;
 
 import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static pt.isel.mpd14.probe.util.SneakyUtils.throwAsRTException;
 
 /**
@@ -42,6 +44,10 @@ public class BindField<T> implements BindMember<T> {
                      * Nota: Tipo base inclui superclasses ou superinterfaces.
                      */
                     if (fType.isAssignableFrom(v.getClass())) {
+                        Format a = f.getAnnotation(Format.class);
+                        if(a != null){
+                            v = a.formatter().newInstance().format(v);
+                        }
                         f.set(target, v);
                         return true;
                     } else {
@@ -49,7 +55,7 @@ public class BindField<T> implements BindMember<T> {
                     }
                 }
             }
-        } catch (IllegalArgumentException | IllegalAccessException ex) {
+        } catch (IllegalArgumentException | IllegalAccessException | InstantiationException  ex) {
             throwAsRTException(ex);
         }
         return false;
