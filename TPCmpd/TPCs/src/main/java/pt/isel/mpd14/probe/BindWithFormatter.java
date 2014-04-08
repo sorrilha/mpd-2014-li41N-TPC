@@ -6,7 +6,8 @@
 package pt.isel.mpd14.probe;
 
 import java.lang.annotation.Annotation;
-import java.text.Format;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,21 +28,40 @@ public class BindWithFormatter<T> implements BindMember<T> {
 
     @Override
     public boolean bind(T target, String name, Object v) {
-
-        Annotation[] a = target.getClass().getAnnotations();
-        for (Annotation x : a) {
-            if (x.getClass().isAssignableFrom(Format.class)) {
-
-                Format f;
-                f = (Format) x;
-                if (f != null) {
-                    v = f.format(v);
-
-                }
-
+        Class c = target.getClass();
+        Format f = null;
+           
+        try {
+             Field field = c.getField(name);
+            if (field!= null ) {
+                f = field.getAnnotation(Format.class);
+                if (f!=null)
+                    v = f.formatter().newInstance().format(v);
             }
+            else
+            {
+                String mName = "setName";
+                Method m = c.getMethod(mName, String.class);
+                if (m!=null)
+                    f = m.getAnnotation(Format.class);
+                if (f!=null)
+                    v = f.formatter().newInstance().format(v);
+               
+            }
+            
+            
+            
+        } catch (NoSuchFieldException ex) {
+            Logger.getLogger(BindWithFormatter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            Logger.getLogger(BindWithFormatter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(BindWithFormatter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(BindWithFormatter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(BindWithFormatter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return bindMember.bind(target, name, v);
+    return bindMember.bind(target, name, v);
     }
-
 }

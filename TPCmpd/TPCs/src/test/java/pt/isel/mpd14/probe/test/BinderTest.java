@@ -34,18 +34,21 @@ public class BinderTest{
          Arrange
         */
         Student s1 = new Student(31531, sdf.parse("05-6-1994"), "Jose Cocacola", null);
-        Map<String, Object> s1fields = Binder.getFieldsValues(s1);
+        
+            Map<String, Object> v = new HashMap<>();
+        v.put("name", "Maria josefina");
+        v.put("id", 657657);
+        v.put("birthdate", sdf.parse("4-5-1997"));
         /*
           Act
         */
         StudentDto s2 = 
-                new Binder<>(StudentDto.class, new BindField<StudentDto>())
-                        .bindTo(s1fields);
+                new Binder<>(StudentDto.class, new BindWithFormatter<>(new BindProp(StudentDto.class))).bindTo(v);
         System.out.println(s2);
         
         Assert.assertEquals(s1.id, s2.id);
         Assert.assertEquals(s1.getName().toUpperCase(), s2.name);
-        Assert.assertEquals(null, s2.birthDate);
+        Assert.assertEquals(s1.id, s2.birthDate);
 
     }
     

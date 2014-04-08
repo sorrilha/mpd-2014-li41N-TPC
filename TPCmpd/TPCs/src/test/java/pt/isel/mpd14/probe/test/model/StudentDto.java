@@ -17,6 +17,8 @@
 
 package pt.isel.mpd14.probe.test.model;
 
+import java.lang.annotation.Retention;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import pt.isel.mpd14.probe.Format;
 
 /**
@@ -27,7 +29,6 @@ public class StudentDto {
 
     final public int id;
     final public String birthDate;
-    
     @Format(formatter = FormatterToUpperCase.class)
     final public String name;
 
