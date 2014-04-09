@@ -11,7 +11,7 @@ import pt.isel.mpd14.probe.Binder;
 import pt.isel.mpd14.probe.BindField;
 import pt.isel.mpd14.probe.BindNonNull;
 import pt.isel.mpd14.probe.BindProp;
-import pt.isel.mpd14.probe.BindWithFormatter;
+import pt.isel.mpd14.probe.BindToUpperCase;
 import pt.isel.mpd14.probe.test.model.Student;
 import pt.isel.mpd14.probe.test.model.StudentDto;
 
@@ -23,10 +23,6 @@ public class BinderTest{
     
     final static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     
-    /**
-     *
-     * @throws Exception
-     */
     @Test
     public void test_bind_student_to_studentDto() throws Exception
     {
@@ -34,28 +30,21 @@ public class BinderTest{
          Arrange
         */
         Student s1 = new Student(31531, sdf.parse("05-6-1994"), "Jose Cocacola", null);
-        
-            Map<String, Object> v = new HashMap<>();
-        v.put("name", "Maria josefina");
-        v.put("id", 657657);
-        v.put("birthdate", sdf.parse("4-5-1997"));
+        Map<String, Object> s1fields = Binder.getFieldsValues(s1);
         /*
           Act
         */
         StudentDto s2 = 
-                new Binder<>(StudentDto.class, new BindWithFormatter<>(new BindProp(StudentDto.class))).bindTo(v);
+                new Binder<>(StudentDto.class, new BindField<StudentDto>(StudentDto.class))
+                        .bindTo(s1fields);
         System.out.println(s2);
         
         Assert.assertEquals(s1.id, s2.id);
         Assert.assertEquals(s1.getName().toUpperCase(), s2.name);
-        Assert.assertEquals(s1.id, s2.birthDate);
+        Assert.assertEquals(null, s2.birthDate);
 
     }
     
-    /**
-     *
-     * @throws Exception
-     */
     @Test
     public void test_bind_fields_filter_null_values() throws Exception
     {
@@ -70,7 +59,7 @@ public class BinderTest{
           Act
         */
         // StudentDto s2 = new Binder(new BindFieldNonNull())
-        StudentDto s2 = new Binder<>(StudentDto.class, new BindNonNull<StudentDto>(new BindField()))
+        StudentDto s2 = new Binder<>(StudentDto.class, new BindNonNull<StudentDto>(new BindField(StudentDto.class)))
                 .bindTo(v);
         System.out.println(s2);
         /*
@@ -82,10 +71,6 @@ public class BinderTest{
 
     }
 
-    /**
-     *
-     * @throws Exception
-     */
     @Test
     public void test_bind_fields_and_put_string_in_uppercase() throws Exception
     {
@@ -95,12 +80,12 @@ public class BinderTest{
         Map<String, Object> v = new HashMap<>();
         v.put("name", "jose manel baptista");
         v.put("id", 657657);
-        v.put("birthDate", "4-5-1997");
+        v.put("birthDate", "4/5/1997");
         /*
           Act
         */
         // StudentDto s2 = new Binder(new BindFieldNonNull())
-          StudentDto s2 = new Binder<>(StudentDto.class, new BindWithFormatter<StudentDto>(new BindField()))
+        StudentDto s2 = new Binder<>(StudentDto.class, new BindField<>(StudentDto.class))
                 .bindTo(v);
         System.out.println(s2);
         /*
@@ -108,18 +93,10 @@ public class BinderTest{
         */
         Assert.assertEquals(v.get("id"), s2.id);
         Assert.assertEquals("JOSE MANEL BAPTISTA", s2.name);
-        Assert.assertEquals(v.get("birthDate"), s2.birthDate);
+        Assert.assertEquals("4-5-1997", s2.birthDate);
 
     }
 
-    /**
-     *
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     * @throws ParseException
-     */
     @Test
     public void test_bind_to_student_properties() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException{
         /*
@@ -137,19 +114,11 @@ public class BinderTest{
         /*
         Assert
         */
-        Assert.assertEquals(v.get("name"), s.getName());
+        Assert.assertEquals(v.get("name").toString().toUpperCase(), s.getName());
         Assert.assertEquals(0, s.id); // id is not set because it is not a property
         Assert.assertEquals(v.get("birthdate"), s.getBirthDate());    
     }
     
-    /**
-     *
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     * @throws ParseException
-     */
     @Test
     public void test_bind_to_student_properties_and_fields() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException{
         /*
@@ -162,12 +131,12 @@ public class BinderTest{
         /*
         Act
         */
-        Student s = new Binder<>(Student.class, new BindProp<>(Student.class), new BindField<>())
+        Student s = new Binder<>(Student.class, new BindProp<>(Student.class), new BindField<>(Student.class))
                 .bindTo(v);
         /*
         Assert
         */
-        Assert.assertEquals(v.get("name"), s.getName());
+        Assert.assertEquals(v.get("name").toString().toUpperCase(), s.getName());
         Assert.assertEquals(v.get("id"), new Integer(s.id));
         Assert.assertEquals(v.get("birthdate"), s.getBirthDate());    
     }

@@ -19,20 +19,17 @@ package pt.isel.mpd14.probe;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import static pt.isel.mpd14.probe.util.SneakyUtils.throwAsRTException;
 
 /**
  * @author Miguel Gamboa at CCISEL
  */
-public class BindProp<T> implements BindMember<T> {
+public class BindProp<T> extends AbstractBindMember<T>{
 
     private final Map<String, Method> setters = new HashMap<>();
 
     public BindProp(Class<T> targetKlass) {
-
         Method[] ms = targetKlass.getMethods();
         for (Method m : ms) {
             String mName = m.getName();
@@ -47,6 +44,7 @@ public class BindProp<T> implements BindMember<T> {
                 continue;
             }
             setters.put(m.getName().substring(3).toLowerCase(), m);
+            addFormatter(m);
         }
     }
 
@@ -58,13 +56,13 @@ public class BindProp<T> implements BindMember<T> {
                 Class<?> propType = WrapperUtilites.toWrapper(m.getParameterTypes()[0]);
                 if (propType.isAssignableFrom(v.getClass())) {
                     m.setAccessible(true);
-                    m.invoke(target, v);
+                    m.invoke(target, format(m, v));
                     return true;
                 }
             }
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException ex) {
             throwAsRTException(ex);
-        }
+        } 
         return false;
 
     }

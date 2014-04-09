@@ -20,10 +20,10 @@ package pt.isel.mpd14.probe;
  *
  * @author Miguel Gamboa at CCISEL
  */
-public class BindFieldNonNull extends BindNonNull{
+public class BindFieldNonNull<T> extends BindNonNull<T>{
 
-    public BindFieldNonNull() {
-        super(new BindField());
+    public BindFieldNonNull(Class<T> targetKlass) {
+        super(new BindField(targetKlass));
     }
 
 }

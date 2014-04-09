@@ -20,6 +20,7 @@ package pt.isel.mpd14.probe.test.model;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import pt.isel.mpd14.probe.Format;
 
 /**
  *
@@ -78,6 +79,7 @@ public class Student {
         this.grades = grades;
     }
 
+    @Format(formatterKlass = FormatterToUpperCase.class)
     public void setName(String name) {
         this.name = name;
     }

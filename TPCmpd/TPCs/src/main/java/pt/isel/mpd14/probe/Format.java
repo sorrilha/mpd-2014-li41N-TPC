@@ -26,5 +26,8 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Format {
-    public Class<? extends Formatter> formatter();
+    
+    public Class<? extends Formatter> formatterKlass() default Formatter.class;
+
+    public String formatterMethod() default "";
 }

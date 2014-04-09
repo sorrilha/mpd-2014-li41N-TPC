@@ -17,8 +17,6 @@
 
 package pt.isel.mpd14.probe.test.model;
 
-import java.lang.annotation.Retention;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import pt.isel.mpd14.probe.Format;
 
 /**
@@ -27,9 +25,17 @@ import pt.isel.mpd14.probe.Format;
  */
 public class StudentDto {
 
+    
+    private static String formatDateSeparator(String dt){
+        return dt.replace("/", "-");
+    }
+    
     final public int id;
+    
+    @Format(formatterMethod = "formatDateSeparator")
     final public String birthDate;
-    @Format(formatter = FormatterToUpperCase.class)
+    
+    @Format(formatterKlass = FormatterToUpperCase.class)
     final public String name;
 
     public StudentDto() {
