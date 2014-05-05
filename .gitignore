@@ -1,1 +1,7 @@
 /TPCmpd/TPCs/target/
+/TPCmpd/Estudo/nbproject/private/
+/TPCmpd/Estudo/build/
+/TPCmpd/Estudo/dist/
+*.properties
+
+*.xml
