@@ -1,4 +1,4 @@
-package pt.isel.mpd14.raffle;
+package pt.isel.mpd14.iters;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
