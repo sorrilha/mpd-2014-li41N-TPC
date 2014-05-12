@@ -23,9 +23,27 @@ public class Program {
     public static void main(String[] args) throws IOException {
         Dealer d = new Dealer(new URL(classroomUrl));
 
-        // String name = IterUtils.query(d.stds) // TPC Alinea 3
+         String name2 = IterUtils.query(d.stds)          
+                 .filter(s -> {
+                    trace("filter1");
+                    return s.nr > 3500;
+                })
+                .filter(s -> {
+                    trace("filter2");
+                    return s.name.startsWith("R");
+                })
+                .map(s -> {
+                    trace("map");
+                    return s.nr + " " + s.name + " " + s.grade;
+                })
+                .skip(2)
+                .iterator().next(); // TPC Alinea 3
+        
+        
         // String name = ListUtils.query(d.stds) // TPC Alinea 2
-        String name = d.stds.stream() // TPC Alinea 1
+        
+        System.out.println("===================");
+        /*String name = d.stds.stream() // TPC Alinea 1
                 .filter(s -> {
                     trace("filter1");
                     return s.nr > 3500;
@@ -41,7 +59,8 @@ public class Program {
                 .skip(2)
                 .iterator().next();
 
-        System.out.println(name);
+        System.out.println(name);*/
+        System.out.println(name2);
     }
 
     public static void trace(String msg) {
