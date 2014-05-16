@@ -11,14 +11,14 @@ package pt.isel.mpd14.tohtml;
  * @author Miguel Gamboa at CCISEL
  */
 public abstract class AbstractHtmlLayout {
-    
+
     public String buildPage(Object o){
         
         
-        HtmlElement html =  new HtmlElement("html");
-        HtmlElement head = new HtmlElement("head");
+        HtmlElement html =  new HtmlElement("html", true);
+        HtmlElement head = new HtmlElement("head",true);
         HtmlElement headContent= buildHeadContent(o);
-        HtmlElement body = new HtmlElement("body");
+        HtmlElement body = new HtmlElement("body", true);
         HtmlElement bodyContent = buildBodyContent(o);
         
         head.add(headContent);

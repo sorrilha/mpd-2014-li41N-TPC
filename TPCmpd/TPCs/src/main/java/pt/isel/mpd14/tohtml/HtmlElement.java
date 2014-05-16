@@ -17,16 +17,18 @@ public class HtmlElement implements HtmlNode {
     final String name;
     final List<HtmlNode> children;
     static int count = 0;
-
-    public HtmlElement(String name) {
+    boolean closeable;
+    public HtmlElement(String name, boolean closeable) {
         this.name = name;
         children = new LinkedList<>();
+        this.closeable=closeable;
     }
 
-    public HtmlElement(String name, String content) {
+    public HtmlElement(String name, String content,boolean closeable) {
         this.name = name;
         children = new LinkedList<>();
         children.add(new TextNode(content));
+        this.closeable=closeable;
     }
 
     public void add(HtmlNode elem) {
@@ -46,16 +48,16 @@ public class HtmlElement implements HtmlNode {
         for (HtmlNode n : children) {
             res+=ident;
             res += n.print();
-            res += "\n";
-
+            if (closeable)
+                res += "\n";
         }
         count--;
         ident="";
         for (int i = 0; i < count; i++) {
             ident += "    ";
         }
-        res += ident+"</" + name + ">";
-        
+        if (closeable)
+            res += ident+"</" + name + ">";
         return res;
     }
 }

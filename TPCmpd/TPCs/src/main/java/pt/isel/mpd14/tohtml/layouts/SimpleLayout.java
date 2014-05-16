@@ -27,20 +27,22 @@ public class SimpleLayout extends AbstractHtmlLayout{
         return res;
         */
      
-       HtmlElement title =  new HtmlElement("title", o.getClass().toString());
+       HtmlElement title =  new HtmlElement("title", o.getClass().toString(), true);
        return title;
         
     }
 
     @Override
     protected HtmlElement buildBodyContent(Object o) {
-        HtmlElement div = new HtmlElement("div");
+        HtmlElement div = new HtmlElement("div",true);
         try {
             Map<String, Object> values = Binder.getFieldsValues(o);
             for (Map.Entry<String, Object> entry : values.entrySet()) {
                 String k = entry.getKey();
                 Object v  = entry.getValue();
-                div.add(new HtmlElement("p", k + ": " + v));                
+                HtmlElement hr = new HtmlElement("hr", false);
+                div.add(hr);
+                div.add(new HtmlElement("p", k + ": " + v, true));                
             }
         } catch (IllegalArgumentException | IllegalAccessException ex) {
             throw new RuntimeException(ex);
