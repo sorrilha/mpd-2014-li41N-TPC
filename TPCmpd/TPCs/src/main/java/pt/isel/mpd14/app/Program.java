@@ -18,8 +18,8 @@ public class Program
         
         Student s = new Student(7237, "Jose Manel", 20);
         
-         PrintStream out = new PrintStream(new FileOutputStream("Stud2.html"));
-       // PrintStream out = System.out;
+        // PrintStream out = new PrintStream(new FileOutputStream("Stud2.html"));
+        PrintStream out = System.out;
         
         // new HtmlWriter(out, new TableLayout()).write(s);
         new HtmlWriter(out, new SimpleLayout()).write(s);
