@@ -20,15 +20,20 @@ import pt.isel.mpd14.tohtml.HtmlElement;
 public class SimpleLayout extends AbstractHtmlLayout{
 
     @Override
-    protected String buildHeadContent(Object o) {
-        String res = "       <title>";
+    protected HtmlElement buildHeadContent(Object o) {
+       /* String res = "       <title>";
         res += o.getClass();
         res += "</title>\n";
         return res;
+        */
+     
+       HtmlElement title =  new HtmlElement("title", o.getClass().toString());
+       return title;
+        
     }
 
     @Override
-    protected String buildBodyContent(Object o) {
+    protected HtmlElement buildBodyContent(Object o) {
         HtmlElement div = new HtmlElement("div");
         try {
             Map<String, Object> values = Binder.getFieldsValues(o);
@@ -40,7 +45,7 @@ public class SimpleLayout extends AbstractHtmlLayout{
         } catch (IllegalArgumentException | IllegalAccessException ex) {
             throw new RuntimeException(ex);
         }
-        return div.print();
+        return div;
     }
 
 }
