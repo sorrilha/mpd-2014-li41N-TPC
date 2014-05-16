@@ -1,4 +1,4 @@
-package pt.isel.mpd14.iters;
+package pt.isel.mpd14.tohtml;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

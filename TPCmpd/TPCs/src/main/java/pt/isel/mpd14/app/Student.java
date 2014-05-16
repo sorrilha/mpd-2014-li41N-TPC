@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pt.isel.mpd14.raffle;
+package pt.isel.mpd14.app;
 
 import static java.lang.Integer.parseInt;
 import java.util.Date;

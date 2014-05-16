@@ -4,17 +4,23 @@
  * and open the template in the editor.
  */
 
-package pt.isel.mpd14.iters;
-
-import java.util.List;
+package pt.isel.mpd14.tohtml;
 
 /**
  *
  * @author Miguel Gamboa at CCISEL
  */
-public class IterUtils {
+class TextNode implements HtmlNode{
+
+    final String content;
     
-    public static <T> Queryable<T> query(List<T> src){
-        return new IterableQueryable(src);
+    public TextNode(String content) {
+        this.content = content;
     }
+
+    @Override
+    public String print() {
+        return content;
+    }
+    
 }
